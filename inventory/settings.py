@@ -33,6 +33,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']  # doing this will allow all the hosts and this is okay for learning but not good in real project or building phase 
 
+# SECRET_KEY = "my_super_secret_key"  # later move this to settings.py
+
+JWT_SECRET = "change-this-to-a-long-random-string"
 
 # Application definition
 
