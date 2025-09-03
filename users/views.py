@@ -15,3 +15,5 @@ class MeView(APIView):
             "username": getattr(request.user, "username", None) or getattr(request.user, "user_name", None),
             "email": getattr(request.user, "email", None),
         })
+    
+    
