@@ -1,8 +1,13 @@
-# App = users
-
 from django.urls import path
-from .views import MeView
+from .views import register, login, me
 
 urlpatterns = [
-    path('me/', MeView.as_view(), name='me'),
+    path("register/", register),
+    path("login/", login),
+    path("me/", me),
 ]
+
+
+
+
+
