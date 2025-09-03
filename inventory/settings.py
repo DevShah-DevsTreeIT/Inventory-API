@@ -31,7 +31,7 @@ SECRET_KEY = 'django-insecure-gptwi33i^_g8bo*^^#^x39@ddr5sky)30v1ed31n2@3_v0-y=6
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['*']  # doing this will allow all the hosts and this is okay for learning but not good in real project or building phase 
 
 
 # Application definition
@@ -46,19 +46,19 @@ INSTALLED_APPS = [
     'checkout',
     'users',
     'products',
-    'rest_framework',
+    # 'rest_framework',
     # 'rest_framework_simplejwt.token_blacklist',
 ]
 
-REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
-     # We’ll keep all views open by default; we’ll protect specific endpoints later
-    ),
-    "DEFAULT_PERMISSION_CLASSES": (
-        "rest_framework.permissions.AllowAny",
-    ),
-}
+# REST_FRAMEWORK = {
+#     'DEFAULT_AUTHENTICATION_CLASSES': (
+#         'rest_framework_simplejwt.authentication.JWTAuthentication',
+#      # We’ll keep all views open by default; we’ll protect specific endpoints later
+#     ),
+#     "DEFAULT_PERMISSION_CLASSES": (
+#         "rest_framework.permissions.AllowAny",
+#     ),
+# }
 
 # (Optional) tweak token lifetimes now or later
 SIMPLE_JWT = {
