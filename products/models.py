@@ -1,61 +1,123 @@
-from django.db import models
-from django.core.validators import MinValueValidator
-from django.utils import timezone
+# from django.db import models
+# from django.core.validators import MinValueValidator
+# from django.utils import timezone
 
-# Create your models here.
-# class Product(models.Model):
-#     name = models.CharField(max_length=100)
-#     category_id = models.CharFieldc(max_length=50)
-#     category = models.CharFieldc(max_length=50)
-#     price = models.DecimalField(max_digits=10, decimal_places=2)
-#     stock = models.IntegerField()
+# # Create your models here.
+# # class Product(models.Model):
+# #     name = models.CharField(max_length=100)
+# #     category_id = models.CharFieldc(max_length=50)
+# #     category = models.CharFieldc(max_length=50)
+# #     price = models.DecimalField(max_digits=10, decimal_places=2)
+# #     stock = models.IntegerField()
 
 
-#     def __str__(self):
-#         return self.name
+# #     def __str__(self):
+# #         return self.name
     
 
-# Category Table
+# # Category Table
+# class Category(models.Model):
+#     # category_id = models.AutoField(primary_key=True)   #AutoField(primary_key=True):- This will Auto incremente the primary key
+#     category = models.CharField(max_length=100, unique=True)  # Unique category name
+#     category_descrip = models.TextField(blank=True, null=True)  #if we use blank=True, null=True it will make the description Optional
+#     created_at = models.DateTimeField(auto_now_add=True)   # Auto set when created
+#     updated_at = models.DateTimeField(auto_now=True)       # Auto update when saved
+#     deleted_at = models.DateTimeField(blank=True, null=True)   # For soft delete
+
+#     def __str__(self):
+#         return self.category
+
+
+# # Product Table
+# class ProductDetail(models.Model):
+#     # product_id = models.AutoField(primary_key=True)
+#     category = models.ForeignKey(
+#         Category,
+#         on_delete=models.CASCADE,   # If category is deleted → delete its products
+#         related_name="products"
+#     )
+#     product_name = models.CharField(max_length=150)
+#     product_description = models.TextField(blank=True, null=True)
+#     available_quantity = models.PositiveIntegerField(default=0)
+#     product_price = models.DecimalField(max_digits=10, decimal_places=2)  # up to 99999999.99
+#     created_at = models.DateTimeField(auto_now_add=True)
+#     updated_at = models.DateTimeField(auto_now=True)
+#     deleted_at = models.DateTimeField(blank=True, null=True)
+
+#     def __str__(self):
+#         return self.product_name
+
+
+
+
+
+
+
+
+######################## Latest ########################
+
+
+from django.db import models
+from django.utils import timezone
+
+
+# Manager that hides soft deleted rows
+class SoftDeleteManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(deleted_at__isnull=True)
+
+
 class Category(models.Model):
-    # category_id = models.AutoField(primary_key=True)   #AutoField(primary_key=True):- This will Auto incremente the primary key
-    category = models.CharField(max_length=100, unique=True)  # Unique category name
-    category_descrip = models.TextField(blank=True, null=True)  #if we use blank=True, null=True it will make the description Optional
-    created_at = models.DateTimeField(auto_now_add=True)   # Auto set when created
-    updated_at = models.DateTimeField(auto_now=True)       # Auto update when saved
-    deleted_at = models.DateTimeField(blank=True, null=True)   # For soft delete
+    category = models.CharField(max_length=100, unique=True)
+    category_descrip = models.TextField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    deleted_at = models.DateTimeField(blank=True, null=True)
+
+    # managers
+    objects = SoftDeleteManager()   # hides deleted
+    all_objects = models.Manager()  # shows all
+
+    def delete(self, using=None, keep_parents=False):
+        self.deleted_at = timezone.now()
+        self.save(update_fields=["deleted_at"])
+
+    def restore(self):
+        self.deleted_at = None
+        self.save(update_fields=["deleted_at"])
 
     def __str__(self):
         return self.category
 
 
-# Product Table
 class ProductDetail(models.Model):
-    # product_id = models.AutoField(primary_key=True)
-    category = models.ForeignKey(
-        Category,
-        on_delete=models.CASCADE,   # If category is deleted → delete its products
-        related_name="products"
-    )
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="products")
     product_name = models.CharField(max_length=150)
     product_description = models.TextField(blank=True, null=True)
     available_quantity = models.PositiveIntegerField(default=0)
-    product_price = models.DecimalField(max_digits=10, decimal_places=2)  # up to 99999999.99
+    product_price = models.DecimalField(max_digits=10, decimal_places=2)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     deleted_at = models.DateTimeField(blank=True, null=True)
+
+    # managers
+    objects = SoftDeleteManager()
+    all_objects = models.Manager()
+
+    def delete(self, using=None, keep_parents=False):
+        self.deleted_at = timezone.now()
+        self.save(update_fields=["deleted_at"])
+
+    def restore(self):
+        self.deleted_at = None
+        self.save(update_fields=["deleted_at"])
 
     def __str__(self):
         return self.product_name
 
 
 
-
-
-
-
-
-
-
+######################## -------xx---xx------- ########################
 
 
 
