@@ -35,7 +35,7 @@ ALLOWED_HOSTS = ['*']  # doing this will allow all the hosts and this is okay fo
 
 # SECRET_KEY = "my_super_secret_key"  # later move this to settings.py
 
-JWT_SECRET = "change-this-to-a-long-random-string"
+JWT_SECRET = "my_super_secret_key"
 
 # Application definition
 
@@ -170,3 +170,9 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+CSRF_TRUSTED_ORIGINS = [
+    "http://127.0.0.1:8000",
+    "http://localhost:8000",
+]
