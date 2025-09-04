@@ -75,14 +75,16 @@ class Category(models.Model):
     deleted_at = models.DateTimeField(blank=True, null=True)
 
     # managers
-    objects = SoftDeleteManager()   # hides deleted
-    all_objects = models.Manager()  # shows all
+    objects = SoftDeleteManager()   # hides soft deleted
+    all_objects = models.Manager()  # shows everything, even deleted
 
     def delete(self, using=None, keep_parents=False):
+        """ Soft delete: mark as deleted instead of removing """
         self.deleted_at = timezone.now()
         self.save(update_fields=["deleted_at"])
 
     def restore(self):
+        """ Restore a previously soft deleted row """
         self.deleted_at = None
         self.save(update_fields=["deleted_at"])
 
@@ -105,17 +107,17 @@ class ProductDetail(models.Model):
     all_objects = models.Manager()
 
     def delete(self, using=None, keep_parents=False):
+        """ Soft delete: mark as deleted instead of removing """
         self.deleted_at = timezone.now()
         self.save(update_fields=["deleted_at"])
 
     def restore(self):
+        """ Restore a previously soft deleted row """
         self.deleted_at = None
         self.save(update_fields=["deleted_at"])
 
     def __str__(self):
         return self.product_name
-
-
 
 ######################## -------xx---xx------- ########################
 
@@ -308,4 +310,12 @@ class ProductDetail(models.Model):
 
 #     def __str__(self):
 #         return self.user_name
+
+
+
+
+
+
+
+
 

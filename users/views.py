@@ -160,3 +160,5 @@ def profile(request):
         return JsonResponse({"error": "token expired"}, status=401)
     except jwt.InvalidTokenError:
         return JsonResponse({"error": "bad token"}, status=401)
+    except Exception as e :
+        return JsonResponse({"Error": str(e)})
