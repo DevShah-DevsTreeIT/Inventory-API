@@ -105,6 +105,7 @@ def register(request):
         user = User.objects.create(
             username=body["username"],
             email=body["email"],
+            profile=body["profile"],
             password=make_password(body["password"])
         )
         return JsonResponse(
