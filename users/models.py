@@ -10,5 +10,5 @@ class User(models.Model):
     auth_token = models.TextField(null=True, blank=True, editable=False)  # store latest JWT
     created_at = models.DateTimeField(auto_now_add=True)    
 
-    def __str__(self):
+    def __str__(self):  
         return self.username
