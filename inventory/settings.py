@@ -35,7 +35,9 @@ ALLOWED_HOSTS = ['*']  # doing this will allow all the hosts and this is okay fo
 
 # SECRET_KEY = "my_super_secret_key"  # later move this to settings.py
 
-JWT_SECRET = "my_super_secret_key"
+JWT_SECRET = "your_super_secret_key"   # change this to something strong
+JWT_ALGORITHM = "HS256"
+JWT_EXP_DELTA_SECONDS = 3600  # 1 hour expiry
 
 # Application definition
 
