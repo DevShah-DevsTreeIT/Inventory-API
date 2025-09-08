@@ -31,8 +31,10 @@ urlpatterns = [
     # users app (register, login, me)
     path("users/", include("users.urls")),  # <--- important
     
+    path("checkout/", include("checkout.urls")),  # <--- important
+    
     # products app (categories, products)
-    path("products/", include("products.urls")),  # <--- important
+    path("api/products/", include("products.urls")),  # <--- important
 
     # global csrf
     path("csrf/", csrf, name="csrf"),

@@ -86,26 +86,26 @@
 
 
 from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_protect
+from django.views.decorators.csrf import csrf_protect,csrf_exempt
 from django.utils.decorators import method_decorator
 from django.contrib.auth.hashers import make_password, check_password
 from django.conf import settings
 import jwt, datetime, json
-from .models import User
+from .models import UserProfile
 
 SECRET = getattr(settings, "JWT_SECRET", "mysecret")
 
-@csrf_protect
+@csrf_exempt
 def register(request):
     if request.method != "POST":
         return JsonResponse({"error": "POST required"}, status=405)
 
     try:
         body = json.loads(request.body)
-        user = User.objects.create(
+        user = UserProfile.objects.create(
             username=body["username"],
             email=body["email"],
-            profile=body["profile"],
+            # profile=body["profile"],
             password=make_password(body["password"])
         )
         return JsonResponse(
@@ -123,8 +123,8 @@ def login(request):
 
     body = json.loads(request.body)
     try:
-        user = User.objects.get(email=body["email"])
-    except User.DoesNotExist:
+        user = UserProfile.objects.get(email=body["email"])
+    except UserProfile.DoesNotExist:
         return JsonResponse({"error": "invalid credentials"}, status=401)
 
     if not check_password(body["password"], user.password):
